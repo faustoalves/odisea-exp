@@ -35,7 +35,7 @@ map
           type: "gltf",
           scale: {x: scale, y: scale, z: scale},
           units: "meters",
-          rotation: {x: 90, y: 270, z: 0},
+          rotation: {x: 95, y: 270, z: 0},
         };
 
         tb.loadObj(options, (model) => {
@@ -152,8 +152,8 @@ function gotoSpecificPosition(destination) {
   travelPath(destination);
   map.flyTo({
     center: destination,
-    speed: 1,
-    curve: 1,
+    speed: 0.35,
+    curve: 1.3,
     zoom: 11,
     bearing: Math.random() * 360,
     pitch: Math.random() * 50 + 30,
