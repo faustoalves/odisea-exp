@@ -109,6 +109,8 @@ function gotoSpecificPosition(destination, zoom) {
     speed: 0.5,
     curve: 0.5,
     zoom: zoom,
+    bearing: Math.random() * 360,
+    pitch: Math.random() * 30 + 40,
   });
 }
 
