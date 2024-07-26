@@ -308,7 +308,10 @@ const map = new mapboxgl.Map({
 
 // eslint-disable-next-line no-undef
 const tb = (window.tb = new Threebox(map, map.getCanvas().getContext("webgl"), {
-  defaultLights: true,
+  defaultLight: true,
+  realSunlight: true,
+  terrain: true,
+  sky: false,
 }));
 
 map.on("style.load", () => {
@@ -324,6 +327,7 @@ map.on("style.load", () => {
         scale: { x: scale, y: scale, z: scale },
         units: "meters",
         rotation: { x: 95, y: 270, z: 0 },
+        anchor: "center",
       };
 
       tb.loadObj(options, (model) => {
@@ -455,10 +459,13 @@ const move = (position) => {
       getPosition(actualPosition.location),
       getPosition(position)
     );
-    building.followPath({ path: path, duration: path.length * 1000 });
+
+    let duration = path.length * 1000 > 10000 ? 10000 : path.length * 1000;
+    building.setCoords([actualPosition.lat, actualPosition.lng]);
+    building.followPath({ path: path, duration: duration });
     map.flyTo({
       center: [values.lat, values.lng],
-      duration: path.length * 1000,
+      duration: duration + 2000,
       zoom: values.zoom,
       bearing: values.bearing,
       pitch: values.pitch,
