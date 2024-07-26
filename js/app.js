@@ -2,7 +2,7 @@ let targetMaps = new Array(
   // Year 1
   {
     location: "position_1",
-    zoom: 11,
+    zoom: 12,
     bearing: 20,
     pitch: 75,
     lat: 26.963978769399944,
@@ -28,7 +28,7 @@ let targetMaps = new Array(
   },
   {
     location: "position_2",
-    zoom: 11,
+    zoom: 13,
     bearing: 120,
     pitch: 80,
     lat: 37.26146507942079,
@@ -54,7 +54,7 @@ let targetMaps = new Array(
   },
   {
     location: "position_3",
-    zoom: 11,
+    zoom: 12.5,
     bearing: 270,
     pitch: 60,
     lat: 44.418596118918856,
@@ -80,7 +80,7 @@ let targetMaps = new Array(
   },
   {
     location: "position_4",
-    zoom: 11,
+    zoom: 11.8,
     bearing: 50,
     pitch: 75,
     lat: 52.610975277905254,
@@ -455,11 +455,10 @@ const move = (position) => {
       getPosition(actualPosition.location),
       getPosition(position)
     );
-    building.followPath({ path: path, duration: 7000 });
+    building.followPath({ path: path, duration: path.length * 1000 });
     map.flyTo({
       center: [values.lat, values.lng],
-      speed: 0.65,
-      curve: 1.3,
+      duration: path.length * 1000,
       zoom: values.zoom,
       bearing: values.bearing,
       pitch: values.pitch,
@@ -467,15 +466,3 @@ const move = (position) => {
     actualPosition = values;
   }
 };
-
-function gotoSpecificPosition(destination) {
-  travelPath(destination);
-  map.flyTo({
-    center: destination,
-    speed: 0.35,
-    curve: 1.3,
-    zoom: 11,
-    bearing: Math.random() * 360,
-    pitch: Math.random() * 50 + 30,
-  });
-}
