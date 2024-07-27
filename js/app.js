@@ -2,11 +2,12 @@ let targetMaps = new Array(
   // Year 1
   {
     location: "position_1",
-    zoom: 12,
-    bearing: 20,
-    pitch: 75,
+    zoom: 11,
+    bearing: 80,
+    pitch: 50,
     lat: 26.963978769399944,
     lng: 37.231386883979994,
+
     intervalToNext: [
       {
         lat: 27.934529791017354,
@@ -28,9 +29,9 @@ let targetMaps = new Array(
   },
   {
     location: "position_2",
-    zoom: 13,
-    bearing: 120,
-    pitch: 80,
+    zoom: 11.5,
+    bearing: 100,
+    pitch: 40,
     lat: 37.26146507942079,
     lng: 23.717636220859177,
     intervalToNext: [
@@ -54,9 +55,9 @@ let targetMaps = new Array(
   },
   {
     location: "position_3",
-    zoom: 12.5,
-    bearing: 270,
-    pitch: 60,
+    zoom: 10,
+    bearing: 110,
+    pitch: 40,
     lat: 44.418596118918856,
     lng: 11.709731125836711,
     intervalToNext: [
@@ -81,7 +82,7 @@ let targetMaps = new Array(
   {
     location: "position_4",
     zoom: 11.8,
-    bearing: 50,
+    bearing: 90,
     pitch: 75,
     lat: 52.610975277905254,
     lng: -7.674663367317734,
@@ -107,7 +108,7 @@ let targetMaps = new Array(
   {
     location: "position_5",
     zoom: 11,
-    bearing: 50,
+    bearing: 75,
     pitch: 75,
     lat: 41.47171823467963,
     lng: -16.330914564358494,
@@ -133,7 +134,7 @@ let targetMaps = new Array(
   {
     location: "position_6",
     zoom: 11,
-    bearing: 50,
+    bearing: 90,
     pitch: 75,
     lat: 53.88765486558336,
     lng: -11.897884844543242,
@@ -163,7 +164,7 @@ let targetMaps = new Array(
   {
     location: "position_7",
     zoom: 11,
-    bearing: 50,
+    bearing: 77,
     pitch: 75,
     lat: 75.89361957301202,
     lng: -2.808577264408868,
@@ -193,8 +194,8 @@ let targetMaps = new Array(
   {
     location: "position_8",
     zoom: 11,
-    bearing: 50,
-    pitch: 75,
+    bearing: 90,
+    pitch: 30,
     lat: 96.38041626510397,
     lng: 7.67086360346741,
     intervalToNext: [
@@ -227,8 +228,8 @@ let targetMaps = new Array(
   {
     location: "position_9",
     zoom: 11,
-    bearing: 50,
-    pitch: 75,
+    bearing: 80,
+    pitch: 25,
     lat: 104.507803915262,
     lng: 0.8451313452648321,
     intervalToNext: [
@@ -308,10 +309,7 @@ const map = new mapboxgl.Map({
 
 // eslint-disable-next-line no-undef
 const tb = (window.tb = new Threebox(map, map.getCanvas().getContext("webgl"), {
-  defaultLight: true,
-  realSunlight: true,
-  terrain: true,
-  sky: false,
+  defaultLights: true,
 }));
 
 map.on("style.load", () => {
@@ -320,7 +318,7 @@ map.on("style.load", () => {
     type: "custom",
     renderingMode: "3d",
     onAdd: function () {
-      const scale = 400;
+      const scale = 800;
       const options = {
         obj: "/assets/odisea.gltf",
         type: "gltf",
@@ -328,6 +326,7 @@ map.on("style.load", () => {
         units: "meters",
         rotation: { x: 95, y: 270, z: 0 },
         anchor: "center",
+        // rotationOffset: 90,
       };
 
       tb.loadObj(options, (model) => {
@@ -460,15 +459,35 @@ const move = (position) => {
       getPosition(position)
     );
 
-    let duration = path.length * 1000 > 10000 ? 10000 : path.length * 1000;
+    let duration = path.length * 2000;
     building.setCoords([actualPosition.lat, actualPosition.lng]);
-    building.followPath({ path: path, duration: duration });
+    building.followPath({ path: path, duration: duration }, function () {
+      tb.remove(line);
+    });
+    var lineGeometry = path.map(function (coordinate) {
+      return coordinate.concat([15]);
+    });
+
+    // create and add line object
+    line = tb.line({
+      geometry: lineGeometry,
+      width: 10,
+      color: "white",
+      opacity: 0.5,
+    });
+
+    tb.add(line);
     map.flyTo({
       center: [values.lat, values.lng],
-      duration: duration + 2000,
+      duration: duration,
+      essential: true,
+      curve: 0.75,
       zoom: values.zoom,
-      bearing: values.bearing,
+      bearing: Math.random() * 20 - 10,
       pitch: values.pitch,
+      easing: function (t) {
+        return t;
+      },
     });
     actualPosition = values;
   }
