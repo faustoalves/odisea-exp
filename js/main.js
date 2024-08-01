@@ -1,15 +1,8 @@
-import { createMap } from "./map.js";
-import { getCameraParameters, getPosition, generatePath } from "./values.js";
+import {createMap} from "./map.js";
+import {generatePath, getCameraParameters, getPosition} from "./values.js";
 
-var building;
-var map = createMap();
-console.log(map);
-
-// eslint-disable-next-line no-undef
-const tb = (window.tb = new Threebox(map, map.getCanvas().getContext("webgl"), {
-  defaultLights: true,
-}));
-
+var {map, actualPosition} = createMap();
+var boat;
 map.on("style.load", () => {
   map.addLayer({
     id: "custom-threebox-model",
@@ -20,17 +13,17 @@ map.on("style.load", () => {
       const options = {
         obj: "/assets/odisea.gltf",
         type: "gltf",
-        scale: { x: scale, y: scale, z: scale },
+        scale: {x: scale, y: scale, z: scale},
         units: "meters",
-        rotation: { x: 95, y: 270, z: 0 },
+        rotation: {x: 95, y: 270, z: 0},
         anchor: "center",
         // rotationOffset: 90,
       };
 
       tb.loadObj(options, (model) => {
-        building = model.setCoords(origin);
-        building.addEventListener("ObjectChanged", onObjectChanged, false);
-        tb.add(building);
+        boat = model.setCoords([actualPosition.lat, actualPosition.lng]);
+        boat.addEventListener("ObjectChanged", onObjectChanged, false);
+        tb.add(boat);
       });
     },
 
@@ -39,9 +32,11 @@ map.on("style.load", () => {
     },
   });
 });
-
+const tb = (window.tb = new Threebox(map, map.getCanvas().getContext("webgl"), {
+  defaultLights: true,
+}));
 function onObjectChanged(e) {
-  console.log(e.detail);
+  console.log(e.detail.object, e.detail.action);
   let model = e.detail.object; //here's the object already modified
   let action = e.detail.action; //here's the action that changed the object
 }
@@ -77,19 +72,17 @@ document.getElementById("position_9").addEventListener("click", function (e) {
 const move = (position) => {
   if (position !== actualPosition.location) {
     let values = getCameraParameters(position);
-    let path = generatePath(
-      getPosition(actualPosition.location),
-      getPosition(position)
-    );
+    let path = generatePath(getPosition(actualPosition.location), getPosition(position));
 
     let duration = path.length * 2000;
-    building.setCoords([actualPosition.lat, actualPosition.lng]);
-    building.followPath({ path: path, duration: duration }, function () {
+    console.log(boat);
+    boat.setCoords([actualPosition.lat, actualPosition.lng]);
+    boat.followPath({path: path, duration: duration}, function () {
       // tb.remove(line);
     });
-    var lineGeometry = path.map(function (coordinate) {
-      return coordinate;
-    });
+    // var lineGeometry = path.map(function (coordinate) {
+    //   return coordinate;
+    // });
 
     // // create and add line object
     // line = tb.line({
