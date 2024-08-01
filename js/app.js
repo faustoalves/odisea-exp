@@ -1,9 +1,11 @@
+import { createMap } from "./map";
+
 let targetMaps = new Array(
   // Year 1
   {
     location: "position_1",
-    zoom: 11,
-    bearing: 80,
+    zoom: 9,
+    bearing: 180,
     pitch: 50,
     lat: 26.963978769399944,
     lng: 37.231386883979994,
@@ -285,32 +287,14 @@ const generatePath = (initialPosition, finalPosition) => {
   return points.map((item) => [item.lat, item.lng]);
 };
 
-mapboxgl.accessToken =
-  "pk.eyJ1IjoiY2FybG9zdG9sZWRvIiwiYSI6ImNpbXZlMWRnMzAycHZ1cGtrZzQ4YW1yZ3IifQ.uG-dnwIGk10NK08Tn8fU-Q";
-
 var actualPosition = getCameraParameters("position_1");
 
 var origin = [actualPosition.lat, actualPosition.lng];
 
 var building;
-const map = new mapboxgl.Map({
-  container: "map",
-  // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-  style: "mapbox://styles/carlostoledo/cly4imkcj00ib01qjga6t6bbw/draft",
-  center: origin,
-  projection: "globe",
-  zoom: actualPosition.zoom,
-  antialias: true,
-  pitch: actualPosition.pitch,
-  bearing: actualPosition.bearing,
-  interactive: true,
-  transitionZoomLevel: 5.9, // create the gl context with MSAA antialiasing, so custom layers are antialiased
-});
+const map = createMap();
 
 // eslint-disable-next-line no-undef
-const tb = (window.tb = new Threebox(map, map.getCanvas().getContext("webgl"), {
-  defaultLights: true,
-}));
 
 map.on("style.load", () => {
   map.addLayer({
@@ -465,7 +449,7 @@ const move = (position) => {
       tb.remove(line);
     });
     var lineGeometry = path.map(function (coordinate) {
-      return coordinate.concat([15]);
+      return coordinate;
     });
 
     // create and add line object
