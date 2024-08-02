@@ -1,14 +1,13 @@
 const baseOption = {
-  obj: "/assets/odisea.gltf",
-  type: "gltf",
+  type: "glb",
   units: "meters",
-  rotation: {x: 95, y: 270, z: 0},
+  rotation: {x: 95, y: 1800, z: 0},
   anchor: "center",
 };
 
-export const boatDefaultScale = 800;
+export const boatDefaultScale = 3800;
 export const boatOptions = {
   ...baseOption,
-  obj: "/assets/odisea.gltf",
+  obj: "/assets/models/odisea.glb",
   scale: {x: boatDefaultScale, y: boatDefaultScale, z: boatDefaultScale},
 };
