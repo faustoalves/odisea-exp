@@ -5,6 +5,16 @@ export class Globe {
     this.map = map;
     this.boat = boat;
     this.actualPosition = actualPosition;
+    this.line = null;
+    this.boatRotation = 270;
+  }
+
+  initMove() {
+    // setInterval(function () {
+    //   if (this.boat) {
+    //     this.boat.rotation.z = Math.random() * 270;
+    //   }
+    // }, 33);
   }
 
   move = (position) => {
@@ -14,7 +24,7 @@ export class Globe {
 
       let duration = path.length * 2000;
       this.boat.setCoords([this.actualPosition.lat, this.actualPosition.lng]);
-      this.boat.followPath({path: path, duration: duration}, function () {});
+      this.boat.followPath({path: path, duration: duration - 2000}, function () {});
 
       this.map.flyTo({
         center: [values.lat, values.lng],
@@ -31,6 +41,8 @@ export class Globe {
       this.actualPosition = values;
     }
   };
+
+  moveBoat = () => {};
 
   // get boat() {
   //   return this.boat;

@@ -1,6 +1,5 @@
 import {Globe} from "./globe.js";
 import {createMap} from "./map.js";
-
 var globe;
 var {map, actualPosition} = createMap();
 var boat;
@@ -18,55 +17,30 @@ map.on("style.load", () => {
         units: "meters",
         rotation: {x: 95, y: 270, z: 0},
         anchor: "center",
-        // rotationOffset: 90,
       };
 
       tb.loadObj(options, (model) => {
         boat = model.setCoords([actualPosition.lat, actualPosition.lng]);
-        // boat.addEventListener("ObjectChanged", onObjectChanged, false);
         tb.add(boat);
         globe = new Globe(map, boat, actualPosition);
+        globe.initMove();
       });
     },
-
     render: function () {
+      boat.rotation.z = boat.rotation.z + 0.01;
       tb.update();
     },
   });
 });
 const tb = (window.tb = new Threebox(map, map.getCanvas().getContext("webgl"), {
   defaultLights: true,
+  passiveRendering: false,
 }));
-// function onObjectChanged(e) {
-//   console.log(e.detail.object, e.detail.action);
-//   let model = e.detail.object; //here's the object already modified
-//   let action = e.detail.action; //here's the action that changed the object
-// }
 
-document.getElementById("position_1").addEventListener("click", function (e) {
-  globe.move(e.target.id);
-});
-document.getElementById("position_2").addEventListener("click", function (e) {
-  globe.move(e.target.id);
-});
-document.getElementById("position_3").addEventListener("click", function (e) {
-  globe.move(e.target.id);
-});
-document.getElementById("position_4").addEventListener("click", function (e) {
-  globe.move(e.target.id);
-});
-document.getElementById("position_5").addEventListener("click", function (e) {
-  globe.move(e.target.id);
-});
-document.getElementById("position_6").addEventListener("click", function (e) {
-  globe.move(e.target.id);
-});
-document.getElementById("position_7").addEventListener("click", function (e) {
-  globe.move(e.target.id);
-});
-document.getElementById("position_8").addEventListener("click", function (e) {
-  globe.move(e.target.id);
-});
-document.getElementById("position_9").addEventListener("click", function (e) {
-  globe.move(e.target.id);
+var buttons = document.querySelectorAll(".btn-position");
+buttons.forEach((button) => {
+  console.log("button");
+  button.addEventListener("click", function (e) {
+    globe.move(e.target.id);
+  });
 });
