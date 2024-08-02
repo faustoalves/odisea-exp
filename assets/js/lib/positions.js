@@ -1,6 +1,7 @@
 import {travelValues} from "./travelValues.js";
 
 export const generatePath = (initialPosition, finalPosition) => {
+  console.log("Position:", initialPosition, finalPosition);
   let points = [];
   if (initialPosition < finalPosition) {
     for (let index = initialPosition; index <= finalPosition; index++) {
@@ -14,7 +15,8 @@ export const generatePath = (initialPosition, finalPosition) => {
   } else {
     for (let index = initialPosition; index >= finalPosition; index--) {
       if (index !== initialPosition) {
-        travelValues[index].intervalToNext.reverse().map((item) => {
+        let values = [...travelValues[index].intervalToNext];
+        values.reverse().map((item) => {
           points.push(item);
         });
       }

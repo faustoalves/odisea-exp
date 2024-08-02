@@ -1,7 +1,7 @@
 const baseOption = {
   type: "glb",
   units: "meters",
-  rotation: {x: 95, y: 1800, z: 0},
+  rotation: {x: 90, y: 180, z: 0},
   anchor: "center",
 };
 
