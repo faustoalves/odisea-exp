@@ -1,17 +1,15 @@
-export const targetMaps = new Array(
+export const travelValues = new Array(
   // Year 1
   {
     location: "position_1",
-    zoom: 9,
-    bearing: 180,
+    zoom: 11,
+    bearing: 0,
     pitch: 50,
     coordinates: [26.375607264134146, 38.1961341587654],
     lat: 26.963978769399944,
     lng: 37.231386883979994,
 
     intervalToNext: [
-      [26.31875700957632, 38.19438007046804],
-      [26.25872226119734, 38.18344870666379],
       [26.1289008825806, 38.147882044726984],
       [25.926576331272635, 38.0298111786249],
       [25.799313667694705, 37.50075257862818],
@@ -39,6 +37,7 @@ export const targetMaps = new Array(
     zoom: 11.5,
     bearing: 100,
     pitch: 40,
+    coordinates: [39.15367899986421, 21.499265257585776],
     lat: 37.26146507942079,
     lng: 23.717636220859177,
     intervalToNext: [

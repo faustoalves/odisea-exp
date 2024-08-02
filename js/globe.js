@@ -32,7 +32,7 @@ export class Globe {
         essential: true,
         curve: 0.75,
         zoom: values.zoom,
-        bearing: Math.random() * 20 - 10,
+        bearing: values.bearing,
         pitch: values.pitch,
         easing: function (t) {
           return t;
