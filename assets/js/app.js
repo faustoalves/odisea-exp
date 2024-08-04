@@ -31,15 +31,15 @@ const threeBox = (window.tb = new Threebox(
   map.getCanvas().getContext("webgl"),
   {
     defaultLights: true,
-    passiveRendering: false,
+    passiveRendering: true,
   }
 ));
 
+function animate() {
+  requestAnimationFrame(animate);
+}
 map.on("style.load", () => {
-  // stats
-  stats = new Stats();
-  map.getContainer().appendChild(stats.dom);
-
+  animate();
   map.addLayer({
     id: "boat-layer",
     type: "custom",
@@ -47,24 +47,14 @@ map.on("style.load", () => {
     onAdd: function () {
       threeBox.loadObj(boatOptions, (e) => {
         objects3d.boat = e.setCoords(actualPosition.coordinates);
+
+        // objects3d.boat.play();
         threeBox.add(objects3d.boat);
       });
-      gui = new GUI();
-      gui.add(api, "method", Method).onChange(initMesh);
-      gui.add(api, "count", 0, 10000).step(10).onChange(initMesh);
-      gui.add(api, "animation").name("animation");
-
-      var perfFolder = gui.addFolder("Performance");
-
-      guiStatsEl = document.createElement("li");
-      guiStatsEl.classList.add("gui-stats");
-
-      perfFolder.$children.appendChild(guiStatsEl);
-      perfFolder.open();
+      animate();
     },
     render: function () {
       threeBox.update();
-      stats.update();
     },
   });
 });
@@ -74,6 +64,7 @@ let stats, gui, guiStatsEl;
 export function setActualPosition(newActualPosition) {
   console.log("setActualPosition", newActualPosition);
   actualPosition = newActualPosition;
+  objects3d.boat.playAnimation({ animation: 3, duration: 999999999999999 });
 }
 
 var buttons = document.querySelectorAll(".btn-position");

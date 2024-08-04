@@ -8,6 +8,7 @@ const baseOption = {
 export const boatDefaultScale = 3800;
 export const boatOptions = {
   ...baseOption,
-  obj: "/assets/models/odisea.glb",
+  obj: "/assets/models/Soldier.glb",
   scale: { x: boatDefaultScale, y: boatDefaultScale, z: boatDefaultScale },
+  defaultAnimation: 0,
 };

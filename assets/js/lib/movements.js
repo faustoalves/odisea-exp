@@ -61,6 +61,7 @@ export function moveToPosition(position) {
         );
       }
     );
+    objects3d.boat.playAnimation({ animation: 1, duration: duration + 5000 });
 
     map.flyTo({
       center: values.coordinates,
