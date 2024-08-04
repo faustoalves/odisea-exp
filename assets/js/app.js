@@ -1,8 +1,8 @@
 import Stats from "https://threejs.org/examples/jsm/libs/stats.module.js";
-import {mapOptions} from "./lib/map.js";
-import {boatOptions} from "./lib/models.js";
-import {moveToPosition} from "./lib/movements.js";
-import {getCameraParameters} from "./lib/positions.js";
+import { mapOptions } from "./lib/map.js";
+import { boatOptions } from "./lib/models.js";
+import { moveToPosition } from "./lib/movements.js";
+import { getCameraParameters } from "./lib/positions.js";
 // Transitional properties
 export var actualPosition = getCameraParameters("position_1");
 export var isMoving = false;
@@ -26,10 +26,14 @@ export var map = new mapboxgl.Map({
 });
 
 // Create Three Box
-const threeBox = (window.tb = new Threebox(map, map.getCanvas().getContext("webgl"), {
-  defaultLights: true,
-  passiveRendering: false,
-}));
+const threeBox = (window.tb = new Threebox(
+  map,
+  map.getCanvas().getContext("webgl"),
+  {
+    defaultLights: true,
+    passiveRendering: false,
+  }
+));
 
 map.on("style.load", () => {
   // stats
