@@ -5,10 +5,10 @@ const baseOption = {
   anchor: "center",
 };
 
-export const boatDefaultScale = 3800;
+export const boatDefaultScale = 100;
 export const boatOptions = {
   ...baseOption,
-  obj: "/assets/models/Soldier.glb",
+  obj: "/assets/models/odisea.glb",
   scale: { x: boatDefaultScale, y: boatDefaultScale, z: boatDefaultScale },
   defaultAnimation: 0,
 };

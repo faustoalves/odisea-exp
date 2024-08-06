@@ -64,7 +64,7 @@ let stats, gui, guiStatsEl;
 export function setActualPosition(newActualPosition) {
   console.log("setActualPosition", newActualPosition);
   actualPosition = newActualPosition;
-  objects3d.boat.playAnimation({ animation: 3, duration: 999999999999999 });
+  objects3d.boat.playAnimation({ animation: 0, duration: 999999999999999 });
 }
 
 var buttons = document.querySelectorAll(".btn-position");
