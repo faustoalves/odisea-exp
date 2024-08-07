@@ -2,7 +2,7 @@ export const travelValues = new Array(
   // Year 1
   {
     location: "position_1",
-    zoom: 11.3,
+    zoom: 8.3,
     bearing: 10,
     pitch: 60,
     coordinates: [27.310130682931202, 36.77967055109666],
@@ -159,7 +159,7 @@ export const travelValues = new Array(
   },
   {
     location: "position_2",
-    zoom: 10.8,
+    zoom: 4,
     bearing: 100,
     pitch: 40,
     coordinates: [39.15775993483712, 21.4440329101226],
@@ -366,10 +366,10 @@ export const travelValues = new Array(
     lat: 104.507803915262,
     lng: 0.8451313452648321,
     intervalToNext: [
-      { lat: 92, lng: 92 },
-      { lat: 94, lng: 94 },
-      { lat: 96, lng: 96 },
-      { lat: 98, lng: 98 },
+      {lat: 92, lng: 92},
+      {lat: 94, lng: 94},
+      {lat: 96, lng: 96},
+      {lat: 98, lng: 98},
     ],
   }
 );

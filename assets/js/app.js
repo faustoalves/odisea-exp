@@ -1,8 +1,8 @@
-import Stats from "https://threejs.org/examples/jsm/libs/stats.module.js";
-import { mapOptions } from "./lib/map.js";
-import { boatOptions } from "./lib/models.js";
-import { moveToPosition } from "./lib/movements.js";
-import { getCameraParameters } from "./lib/positions.js";
+import {getCompletedPath} from "./lib/completedPath.js";
+import {mapOptions} from "./lib/map.js";
+import {boatOptions} from "./lib/models.js";
+import {moveToPosition} from "./lib/movements.js";
+import {getCameraParameters} from "./lib/positions.js";
 // Transitional properties
 export var actualPosition = getCameraParameters("position_1");
 export var isMoving = false;
@@ -26,14 +26,21 @@ export var map = new mapboxgl.Map({
 });
 
 // Create Three Box
-const threeBox = (window.tb = new Threebox(
-  map,
-  map.getCanvas().getContext("webgl"),
-  {
-    defaultLights: true,
-    passiveRendering: true,
-  }
-));
+const threeBox = (window.tb = new Threebox(map, map.getCanvas().getContext("webgl"), {
+  defaultLights: true,
+  passiveRendering: true,
+}));
+
+async function loadCompletedPositions() {
+  let values = await getCompletedPath();
+  var lineCompleted = tb.line({
+    geometry: values,
+    width: 2,
+    color: "#ff0000",
+  });
+
+  tb.add(lineCompleted);
+}
 
 function animate() {
   requestAnimationFrame(animate);
@@ -52,6 +59,7 @@ map.on("style.load", () => {
         threeBox.add(objects3d.boat);
       });
       animate();
+      loadCompletedPositions();
     },
     render: function () {
       threeBox.update();
@@ -64,7 +72,7 @@ let stats, gui, guiStatsEl;
 export function setActualPosition(newActualPosition) {
   console.log("setActualPosition", newActualPosition);
   actualPosition = newActualPosition;
-  objects3d.boat.playAnimation({ animation: 0, duration: 999999999999999 });
+  objects3d.boat.playAnimation({animation: 0, duration: 999999999999999});
 }
 
 var buttons = document.querySelectorAll(".btn-position");
