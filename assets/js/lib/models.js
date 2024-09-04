@@ -5,7 +5,7 @@ const baseOption = {
   anchor: "center",
 };
 
-export const boatDefaultScale = 100;
+export const boatDefaultScale = 300;
 export const boatOptions = {
   ...baseOption,
   obj: "/assets/models/odisea.glb",

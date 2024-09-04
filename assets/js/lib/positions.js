@@ -1,7 +1,10 @@
-import {travelValues} from "./travelValues.js";
+import { travelValues } from "./travelValues.js";
 
-export const generatePath = (initialPosition, finalPosition) => {
-  console.log("Position:", initialPosition, finalPosition);
+export const generatePath = (
+  initialPosition,
+  finalPosition,
+  duration = 8000
+) => {
   let points = [];
   if (initialPosition < finalPosition) {
     for (let index = initialPosition; index <= finalPosition; index++) {
@@ -22,6 +25,14 @@ export const generatePath = (initialPosition, finalPosition) => {
       }
       points.push(travelValues[index].coordinates);
     }
+  }
+  let cameraRouteDistance = turf.lineDistance(turf.lineString(points));
+  let newPoints = [];
+  for (let index = 0; index < duration / 100; index++) {
+    newPoints.push(
+      turf.along(turf.lineString(points), (cameraRouteDistance * index) / 100)
+        .geometry.coordinates
+    );
   }
   return points;
 };

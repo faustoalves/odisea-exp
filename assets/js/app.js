@@ -1,11 +1,15 @@
-import {getCompletedPath} from "./lib/completedPath.js";
-import {mapOptions} from "./lib/map.js";
-import {boatOptions} from "./lib/models.js";
-import {moveToPosition} from "./lib/movements.js";
-import {getCameraParameters} from "./lib/positions.js";
+import { getCompletedPath } from "./lib/completedPath.js";
+import { mapOptions } from "./lib/map.js";
+import { boatOptions } from "./lib/models.js";
+import { moveToPosition } from "./lib/movements.js";
+import { getCameraParameters } from "./lib/positions.js";
 // Transitional properties
 export var actualPosition = getCameraParameters("position_1");
 export var isMoving = false;
+
+export var actualPath = {};
+var enableMove = false;
+var start;
 
 // Objects
 export var objects3d = {
@@ -26,27 +30,51 @@ export var map = new mapboxgl.Map({
 });
 
 // Create Three Box
-const threeBox = (window.tb = new Threebox(map, map.getCanvas().getContext("webgl"), {
-  defaultLights: true,
-  passiveRendering: true,
-}));
-
-async function loadCompletedPositions() {
-  let values = await getCompletedPath();
-  var lineCompleted = tb.line({
-    geometry: values,
-    width: 2,
-    color: "#ff0000",
-  });
-
-  tb.add(lineCompleted);
-}
+const threeBox = (window.tb = new Threebox(
+  map,
+  map.getCanvas().getContext("webgl"),
+  {
+    defaultLights: true,
+    passiveRendering: true,
+  }
+));
 
 function animate() {
   requestAnimationFrame(animate);
 }
 map.on("style.load", () => {
   animate();
+  function frame(time) {
+    if (enableMove) {
+      if (!start) start = time;
+      const phase = (time - start) / actualPath.duration;
+      // phase is normalized between 0 and 1
+      // when the animation is finished, reset start to loop the animation
+      if (phase > 1) {
+        // wait 1.5 seconds before looping
+        enableMove = false;
+      }
+
+      let cameraRouteDistance = turf.lineDistance(
+        turf.lineString(actualPath.path)
+      );
+
+      let zoomFactor = phase < 0.5 ? phase : (phase - 1) * -1;
+      zoomFactor = zoomFactor > 0.4 ? 0.4 : zoomFactor;
+      let zoom = 10 - zoomFactor * 3 * (cameraRouteDistance / 1000);
+      zoom = zoom < 6 ? 6 : zoom;
+
+      let alongCamera = turf.along(
+        turf.lineString(actualPath.path),
+        cameraRouteDistance * phase
+      ).geometry.coordinates;
+      map.setCenter(alongCamera);
+      map.setZoom(zoom);
+    }
+
+    window.requestAnimationFrame(frame);
+  }
+
   map.addLayer({
     id: "boat-layer",
     type: "custom",
@@ -59,20 +87,26 @@ map.on("style.load", () => {
         threeBox.add(objects3d.boat);
       });
       animate();
-      loadCompletedPositions();
     },
+
     render: function () {
       threeBox.update();
     },
   });
+  window.requestAnimationFrame(frame);
 });
 
-let stats, gui, guiStatsEl;
+export function setActualPath(newValues) {
+  console.log("setActualPath");
+  actualPath = newValues;
+  start = null;
+  enableMove = true;
+}
 
 export function setActualPosition(newActualPosition) {
-  console.log("setActualPosition", newActualPosition);
+  console.log("setActualPosition");
   actualPosition = newActualPosition;
-  objects3d.boat.playAnimation({animation: 0, duration: 999999999999999});
+  objects3d.boat.playAnimation({ animation: 0, duration: 999999999999999 });
 }
 
 var buttons = document.querySelectorAll(".btn-position");

@@ -2,8 +2,8 @@ export const travelValues = new Array(
   // Year 1
   {
     location: "position_1",
-    zoom: 11.3,
-    bearing: 10,
+    zoom: 10,
+    bearing: 0,
     pitch: 60,
     coordinates: [32.548839, 29.93468],
 
