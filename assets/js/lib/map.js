@@ -5,5 +5,5 @@ export const mapOptions = {
   projection: "globe",
   // antialias: true,
   interactive: true,
-  transitionZoomLevel: 5.9,
+  transitionZoomLevel: 3.9,
 };

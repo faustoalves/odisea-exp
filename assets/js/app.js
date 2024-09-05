@@ -60,9 +60,11 @@ map.on("style.load", () => {
       );
 
       let zoomFactor = phase < 0.5 ? phase : (phase - 1) * -1;
-      zoomFactor = zoomFactor > 0.4 ? 0.4 : zoomFactor;
-      let zoom = 10 - zoomFactor * 3 * (cameraRouteDistance / 1000);
+      zoomFactor = zoomFactor > 0.25 ? 0.25 : zoomFactor;
+      let zoom = 10 - zoomFactor * 5 * (cameraRouteDistance / 1000);
       zoom = zoom < 6 ? 6 : zoom;
+
+      console.log((zoom - 12) * -1);
 
       let alongCamera = turf.along(
         turf.lineString(actualPath.path),

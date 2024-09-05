@@ -23,9 +23,9 @@ export function moveToPosition(position) {
 
     let cameraRouteDistance = turf.lineDistance(turf.lineString(path));
 
-    let duration = (cameraRouteDistance * 3 + diff * 300) * 1.2;
+    let duration = (cameraRouteDistance + diff * 1500) * 1.2;
+    console.log(duration);
 
-    console.log(cameraRouteDistance);
     objects3d.boat.stop();
     setActualPath({ path: path, duration: duration });
 
