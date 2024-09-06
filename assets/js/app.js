@@ -1,8 +1,7 @@
-import { getCompletedPath } from "./lib/completedPath.js";
-import { mapOptions } from "./lib/map.js";
-import { boatOptions } from "./lib/models.js";
-import { moveToPosition } from "./lib/movements.js";
-import { getCameraParameters } from "./lib/positions.js";
+import {mapOptions} from "./lib/map.js";
+import {boatOptions} from "./lib/models.js";
+import {moveToPosition} from "./lib/movements.js";
+import {getCameraParameters} from "./lib/positions.js";
 // Transitional properties
 export var actualPosition = getCameraParameters("position_1");
 export var isMoving = false;
@@ -10,6 +9,8 @@ export var isMoving = false;
 export var actualPath = {};
 var enableMove = false;
 var start;
+var actualBearing;
+var actualPitch;
 
 // Objects
 export var objects3d = {
@@ -30,14 +31,10 @@ export var map = new mapboxgl.Map({
 });
 
 // Create Three Box
-const threeBox = (window.tb = new Threebox(
-  map,
-  map.getCanvas().getContext("webgl"),
-  {
-    defaultLights: true,
-    passiveRendering: true,
-  }
-));
+const threeBox = (window.tb = new Threebox(map, map.getCanvas().getContext("webgl"), {
+  defaultLights: true,
+  passiveRendering: true,
+}));
 
 function animate() {
   requestAnimationFrame(animate);
@@ -46,8 +43,13 @@ map.on("style.load", () => {
   animate();
   function frame(time) {
     if (enableMove) {
-      if (!start) start = time;
+      if (!start) {
+        start = time;
+      }
+
       const phase = (time - start) / actualPath.duration;
+      const diffBearing = (actualPath.bearing - actualBearing) * phase;
+      const diffPitch = (actualPath.pitch - actualPitch) * phase;
       // phase is normalized between 0 and 1
       // when the animation is finished, reset start to loop the animation
       if (phase > 1) {
@@ -55,23 +57,19 @@ map.on("style.load", () => {
         enableMove = false;
       }
 
-      let cameraRouteDistance = turf.lineDistance(
-        turf.lineString(actualPath.path)
-      );
+      let cameraRouteDistance = turf.lineDistance(turf.lineString(actualPath.path));
 
       let zoomFactor = phase < 0.5 ? phase : (phase - 1) * -1;
       zoomFactor = zoomFactor > 0.25 ? 0.25 : zoomFactor;
       let zoom = 10 - zoomFactor * 5 * (cameraRouteDistance / 1000);
       zoom = zoom < 6 ? 6 : zoom;
 
-      console.log((zoom - 12) * -1);
-
-      let alongCamera = turf.along(
-        turf.lineString(actualPath.path),
-        cameraRouteDistance * phase
-      ).geometry.coordinates;
+      let alongCamera = turf.along(turf.lineString(actualPath.path), cameraRouteDistance * phase).geometry.coordinates;
       map.setCenter(alongCamera);
       map.setZoom(zoom);
+      console.log(actualBearing + diffBearing, "/", actualPitch + diffBearing);
+      map.setBearing(actualBearing + diffBearing);
+      map.setPitch(actualPitch + diffPitch);
     }
 
     window.requestAnimationFrame(frame);
@@ -99,16 +97,16 @@ map.on("style.load", () => {
 });
 
 export function setActualPath(newValues) {
-  console.log("setActualPath");
   actualPath = newValues;
+  actualBearing = map.getBearing();
+  actualPitch = map.getPitch();
   start = null;
   enableMove = true;
 }
 
 export function setActualPosition(newActualPosition) {
-  console.log("setActualPosition");
   actualPosition = newActualPosition;
-  objects3d.boat.playAnimation({ animation: 0, duration: 999999999999999 });
+  objects3d.boat.playAnimation({animation: 0, duration: 999999999999999});
 }
 
 var buttons = document.querySelectorAll(".btn-position");
