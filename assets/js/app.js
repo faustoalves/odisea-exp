@@ -46,7 +46,6 @@ map.on("style.load", () => {
       if (!start) {
         start = time;
       }
-
       const phase = (time - start) / actualPath.duration;
       const diffBearing = (actualPath.bearing - actualBearing) * phase;
       const diffPitch = (actualPath.pitch - actualPitch) * phase;
@@ -67,7 +66,6 @@ map.on("style.load", () => {
       let alongCamera = turf.along(turf.lineString(actualPath.path), cameraRouteDistance * phase).geometry.coordinates;
       map.setCenter(alongCamera);
       map.setZoom(zoom);
-      console.log(actualBearing + diffBearing, "/", actualPitch + diffBearing);
       map.setBearing(actualBearing + diffBearing);
       map.setPitch(actualPitch + diffPitch);
     }
@@ -82,8 +80,6 @@ map.on("style.load", () => {
     onAdd: function () {
       threeBox.loadObj(boatOptions, (e) => {
         objects3d.boat = e.setCoords(actualPosition.coordinates);
-
-        // objects3d.boat.play();
         threeBox.add(objects3d.boat);
       });
       animate();
@@ -106,6 +102,7 @@ export function setActualPath(newValues) {
 
 export function setActualPosition(newActualPosition) {
   actualPosition = newActualPosition;
+  objects3d.boat.stop();
   objects3d.boat.playAnimation({animation: 0, duration: 999999999999999});
 }
 

@@ -2,7 +2,6 @@ import {actualPosition, objects3d, setActualPath, setActualPosition} from "../ap
 import {generatePath, getCameraParameters, getPosition} from "./positions.js";
 
 export function moveToPosition(position) {
-  console.log("Moving to position", position);
   if (position !== actualPosition.location) {
     let diff = getPosition(actualPosition.location) - getPosition(position);
     if (diff < 0) {
@@ -15,7 +14,6 @@ export function moveToPosition(position) {
     let cameraRouteDistance = turf.lineDistance(turf.lineString(path));
 
     let duration = (cameraRouteDistance + diff * 1500) * 1.2;
-    console.log(duration);
 
     objects3d.boat.stop();
     setActualPath({path: path, duration: duration, bearing: values.bearing, pitch: values.pitch});
@@ -26,8 +24,9 @@ export function moveToPosition(position) {
     ]);
 
     objects3d.boat.followPath({path: path, duration: duration});
-    setActualPosition(getCameraParameters(position));
-
+    setTimeout(() => {
+      setActualPosition(getCameraParameters(position));
+    }, duration);
     objects3d.boat.playAnimation({animation: 0, duration: duration});
   }
 }
