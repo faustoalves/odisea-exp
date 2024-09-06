@@ -60,8 +60,8 @@ map.on("style.load", () => {
 
       let zoomFactor = phase < 0.5 ? phase : (phase - 1) * -1;
       zoomFactor = zoomFactor > 0.25 ? 0.25 : zoomFactor;
-      let zoom = 10 - zoomFactor * 5 * (cameraRouteDistance / 1000);
-      zoom = zoom < 6 ? 6 : zoom;
+      let zoom = 10 - zoomFactor * 8 * (cameraRouteDistance / 1000);
+      zoom = zoom < 5 ? 5 : zoom;
 
       let alongCamera = turf.along(turf.lineString(actualPath.path), cameraRouteDistance * phase).geometry.coordinates;
       map.setCenter(alongCamera);

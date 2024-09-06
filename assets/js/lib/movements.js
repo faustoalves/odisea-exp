@@ -13,7 +13,7 @@ export function moveToPosition(position) {
 
     let cameraRouteDistance = turf.lineDistance(turf.lineString(path));
 
-    let duration = (cameraRouteDistance + diff * 1500) * 1.2;
+    let duration = Math.min((cameraRouteDistance / diff) * (3 * diff), 8000);
 
     objects3d.boat.stop();
     setActualPath({path: path, duration: duration, bearing: values.bearing, pitch: values.pitch});

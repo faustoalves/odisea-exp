@@ -3,8 +3,8 @@ export const travelValues = new Array(
   {
     location: "position_1",
     zoom: 10,
-    bearing: 0,
-    pitch: 60,
+    bearing: 30,
+    pitch: 55,
     coordinates: [32.548839, 29.93468],
 
     intervalToNext: [
@@ -89,8 +89,8 @@ export const travelValues = new Array(
   {
     location: "position_2",
     zoom: 10.8,
-    bearing: 20,
-    pitch: 55,
+    bearing: -20,
+    pitch: 40,
     coordinates: [39.153731, 21.465007],
     lat: 37.26146507942079,
     lng: 23.717636220859177,
@@ -125,8 +125,8 @@ export const travelValues = new Array(
   {
     location: "position_3",
     zoom: 12,
-    bearing: 120,
-    pitch: 65,
+    bearing: 20,
+    pitch: 25,
     coordinates: [37.226492, 19.611757],
     lat: 44.418596118918856,
     lng: 11.709731125836711,
@@ -169,8 +169,8 @@ export const travelValues = new Array(
   {
     location: "position_4",
     zoom: 11.8,
-    bearing: 100,
-    pitch: 25,
+    bearing: 0,
+    pitch: 60,
     coordinates: [37.165393, 21.040636],
     lat: 52.610975277905254,
     lng: -7.674663367317734,
@@ -209,8 +209,8 @@ export const travelValues = new Array(
   {
     location: "position_5",
     zoom: 11,
-    bearing: 170,
-    pitch: 15,
+    bearing: 20,
+    pitch: 35,
     coordinates: [43.135576, 11.602046],
     lat: 41.47171823467963,
     lng: -16.330914564358494,
@@ -259,8 +259,8 @@ export const travelValues = new Array(
   {
     location: "position_6",
     zoom: 11,
-    bearing: 290,
-    pitch: 18,
+    bearing: -15,
+    pitch: 50,
     coordinates: [53.81404, 12.61644],
     lat: 53.88765486558336,
     lng: -11.897884844543242,
@@ -300,8 +300,8 @@ export const travelValues = new Array(
   {
     location: "position_7",
     zoom: 11,
-    bearing: 120,
-    pitch: 25,
+    bearing: 15,
+    pitch: 20,
     coordinates: [46.354504, -9.437954],
     lat: 75.89361957301202,
     lng: -2.808577264408868,
@@ -349,7 +349,7 @@ export const travelValues = new Array(
   {
     location: "position_8",
     zoom: 11,
-    bearing: 200,
+    bearing: 5,
     pitch: 30,
     coordinates: [46.29857, -15.711139],
     lat: 96.38041626510397,
@@ -387,8 +387,8 @@ export const travelValues = new Array(
   {
     location: "position_9",
     zoom: 11,
-    bearing: 160,
-    pitch: 40,
+    bearing: 30,
+    pitch: 25,
     coordinates: [39.190583, -6.158347],
     lat: 104.507803915262,
     lng: 0.8451313452648321,
@@ -425,8 +425,8 @@ export const travelValues = new Array(
   {
     location: "position_10",
     zoom: 11,
-    bearing: 120,
-    pitch: 26,
+    bearing: -20,
+    pitch: 5,
     coordinates: [40.534635, -12.965475],
     lat: 104.507803915262,
     lng: 0.8451313452648321,
